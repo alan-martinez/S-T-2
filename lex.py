@@ -21,7 +21,7 @@ class Analyzer(Type):
         
         self.typeString = typeString
         
-        Type.__init__(self, type)
+        Type.__init__(self)
     
     def tipoCadena(self, type):
         self.typeString = ""
@@ -32,6 +32,7 @@ class Analyzer(Type):
             self.ENTERO: self.message_ENTERO,
             self.REAL: self.message_REAL,
             self.FLOAT: self.m_FLOAT,
+            self.PESO: self.m_PESO
         }
         
         switch[type]()
@@ -52,6 +53,17 @@ class Analyzer(Type):
                 1: self.state01,
                 2: self.state02
             }
+            switch.get(self.state, self.error)()
+        
+        if self.tipo < 11:
+    
+            switch = {
+                -1: self.error, # ERROR
+                2: self.caso00, # Identificador
+                3: self.caso01, # Entero
+                5: self.caso02, # Real
+            }
+            switch.get(self.state, self.error)()
     
     def verificarPalabraReservada(self, symbol):
         palabrasReservadas = {
@@ -59,7 +71,6 @@ class Analyzer(Type):
         "float": self.FLOAT
         }
         self.type = palabrasReservadas.get(symbol, self.type)
-
 
 
     def siguienteCaracter(self):
@@ -73,8 +84,17 @@ class Analyzer(Type):
         self.state = state
         self.symbol += self.character
     
+    def retroceso(self):
+        if not self.esPeso(self.character):
+            self.indice -= 1
+        self.continua = False
+        self.verificarPalabraReservada(self.symbol)
+    
     def terminado(self):
-        return self.indice >= len(self.cadena)
+        return self.indice >= len(self.input)
+
+    def esPeso(self, character):
+        return character == "$"
     
     def esEspacio(self, character):
         return character == " "
@@ -96,7 +116,9 @@ class Analyzer(Type):
         self.continua = False
     
     def state01(self):
-        if self.esLetra(self.character):
+        if self.esPeso(self.character):
+            self.siguienteEstado(0)
+        elif self.esLetra(self.character):
             self.siguienteEstado(2)
         elif self.esNumero(self.character):
             self.siguienteEstado(3)
@@ -127,10 +149,12 @@ class Analyzer(Type):
     def caso01(self):
         self.type = self.ENTERO
         
-    def caso03(self):
+    def caso02(self):
         self.type = self.REAL
     
     #Tipos de mensajes
+    def m_PESO(self):
+        self.typeString = "Fin de Cadena"
     def message_ERROR(self):
         self.typeString = "Undefined"
     def message_IDENTIFICADOR(self):

@@ -15,9 +15,9 @@ def main():
         print("\n")
         print('{:<30}'.format("Simbolo") + '{:<30}'.format("Tipo") + '{:<5}'.format("Codigo de Tipo"))
 
-        while analizador.caracter != "$":
+        while analizador.character != "$":
             analizador.nextSymbol()
-            print('{:<30}'.format(analizador.simbolo) + '{:<30}'.format(analizador.tipoCadena(analizador.tipo)) + '{:<5}'.format(str(analizador.tipo)))
+            print('{:<30}'.format(analizador.symbol) + '{:<30}'.format(analizador.tipoCadena(analizador.type)) + '{:<5}'.format(str(analizador.type)))
 
 if __name__ == '__main__':
     main()
