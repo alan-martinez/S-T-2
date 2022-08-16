@@ -31,8 +31,8 @@ class Analyzer(Type):
             self.IDENTIFICADOR: self.message_IDENTIFICADOR,
             self.ENTERO: self.message_ENTERO,
             self.REAL: self.message_REAL,
-            self.FLOAT: self.m_FLOAT,
-            self.PESO: self.m_PESO
+            self.FLOAT: self.message_FLOAT,
+            self.PESO: self.message_PESO
         }
         
         switch[type]()
@@ -153,7 +153,7 @@ class Analyzer(Type):
         self.type = self.REAL
     
     #Tipos de mensajes
-    def m_PESO(self):
+    def message_PESO(self):
         self.typeString = "Fin de Cadena"
     def message_ERROR(self):
         self.typeString = "Undefined"

@@ -3,7 +3,7 @@ from lex import Analyzer
 
 def main():
 
-    leer = str(input("Dijite el codigo a evaluar: "))
+    leer = str(input("Digite el codigo a evaluar: "))
    
     if len(leer) <= 0:
         print(leer + " No es un valor valido")
