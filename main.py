@@ -1,23 +1,23 @@
 import sys
-from lex import Analyzer
+from lex import Lexico
 
 def main():
 
-    leer = str(input("Digite el codigo a evaluar: "))
+    entrada = str(input("Introduce codigo: "))
    
-    if len(leer) <= 0:
-        print(leer + " No es un valor valido")
+    if len(entrada) <= 0:
+        print(entrada + " tiene errores, no valido")
     else:
-        analizador = Analyzer(leer)
+        analyzer = Lexico(entrada)
 
         print("\n\n")
-        print("Resultado del analisis lexico:")
+        print("**** Resultado: ")
         print("\n")
-        print('{:<30}'.format("Simbolo") + '{:<30}'.format("Tipo") + '{:<5}'.format("Codigo de Tipo"))
+        print('{:<30}'.format("Entrada") + '{:<30}'.format("Simbolo") + '{:<5}'.format("Tipo"))
 
-        while analizador.character != "$":
-            analizador.nextSymbol()
-            print('{:<30}'.format(analizador.symbol) + '{:<30}'.format(analizador.tipoCadena(analizador.type)) + '{:<5}'.format(str(analizador.type)))
+        while analyzer.character != "$":
+            analyzer.nextSymbol()
+            print('{:<30}'.format(analyzer.symbol) + '{:<30}'.format(analyzer.tipoCadena(analyzer.type)) + '{:<5}'.format(str(analyzer.type)))
 
 if __name__ == '__main__':
     main()
