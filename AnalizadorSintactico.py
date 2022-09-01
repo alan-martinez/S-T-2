@@ -57,6 +57,58 @@ class analizador:
         self.tipo = list() 
         self.aux = 0
     
+    def analizador(self):
+        while self.continua:
+            c = self.input[self.i]
+
+            if self.estado == 0:
+                if c >= "0" and c <= "9":
+                    self.estado = 1
+                    self.tmp += c
+                
+                elif c == "E":
+                    self.tmp += c
+                    self.tipo.append(3)
+                    objlex = noTerminal("E",self.tipo[-1],0)
+                    listLexico.append(objlex)
+                    self.continua = False
+                elif c >= "a" and c <= "z" or c >= "A" and c <= "Z" or c == "_":
+                    self.estado = 4
+                    self.tmp += c
+                elif c == " ":
+                    self.estado = 0
+                elif c == "'" or c=='"':
+                    self.estado = 9
+                    self.tmp += c
+                elif (c == "*") or (c == "/"):
+                    self.estado = 0
+                    self.tmp += c
+                    self.tipo.append(6)
+                    objlex = terminal(self.tmp, self.tipo[-1],0)
+                    listLexico.append(objlex)
+                    self.clean()
+                elif (c == "=") or (c == "!"): #Para los simbolos
+                    self.clean()
+                    self.estado = 5
+                    self.tmp += c
+                elif (c == "<") or (c == ">"):
+                    self.clean()
+                    self.estado = 6
+                    self.tmp += c
+                elif (c == "|"):
+                    self.clean()
+                    self.estado = 7
+                    self.tmp += c
+                elif (c == "&"):
+                    self.clean()
+                    self.estado = 8
+                    self.tmp += c
+                elif (c == "+") or (c == "-"):
+                    if self.aux == 1:
+                        self.tipo.append(1)
+                        objlex = terminal(self.tmp, self.tipo[-1],0)
+                        
+
     def reservada(self):
         res = self.tmp
         if "while" == res:
