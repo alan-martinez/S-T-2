@@ -418,7 +418,7 @@ class analizador:
 
 
 
-cad = "a+b+c"
+cad = "a+b+c+d+e+f"
 print("Cadena ingresada: ", cad)
 particionEntrada = cad.split()
 particionEntrada.append("$")
@@ -463,7 +463,7 @@ while True:
         print('Desplazamiento')
     elif accion.estado  <0:
         if accion.estado == -1:
-            print('Aceptado')
+            print('Cadena aceptada')
             break
         else:
             print('Regla')
