@@ -1,4 +1,16 @@
-# Seminario-Traductores-2
-Tarea mini generador lexico, de la materia Seminario Traductores de lenguajes 2 realizado en python. Los tokens que acepta son identificadores, enteros y reales, como en la siguiente imagen: 
-![image](https://user-images.githubusercontent.com/70921354/185156869-e89639bf-7cac-4289-b2cb-e3264671ae0c.png)
-Se implementan varios estados, para ir evaluando caracter por caracter y asi llegando a un espacio identificar a que tipo de simbolo pertenece y agregarle su respectivo tipo ya definido. 
+# Seminario-Traductores-2 - Analizador Sintáctico (Implementación usando Objetos)
+Tarea: Analizador sintactico (Implementando objectos) con el Dr. MICHEL EMANUEL LOPEZ FRANCO.
+Para esta practica fue necesario implementar una clase principal llamada ElementoPila y 3 clases mas que heredaban de esta como lo son Terminal, No terminal y Estado.
+Con esto se consiguio que la salida fuera igual que el analisis manual, teniendo como resultados los desplazamientos, las reglas implementadas en las tablas asi como los terminales y no terminales:
+
+![image](https://user-images.githubusercontent.com/70921354/188274106-8bafcb55-d8b7-447e-9940-edb85036337c.png)
+
+![image](https://user-images.githubusercontent.com/70921354/188274122-22b1f1f6-d29f-43d9-abcc-4543afdee506.png)
+
+
+### Tablas utilizadas:
+
+![image](https://user-images.githubusercontent.com/70921354/188274227-8c88bd78-0ba6-4646-9cdf-60eb04cd285c.png)
+
+#### Autor: 
+Alan Martínez
