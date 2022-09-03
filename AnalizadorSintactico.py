@@ -1,115 +1,113 @@
 import numpy as np
+from tablas import *
 
 listLexico = list()
 
-tabla3 = [2, 0, 0, 1],\
-        [0, 0, -1, 0],\
-        [0, 3, -3, 0],\
-        [2, 0, 0, 4],\
-        [0, 0, -2, 0]
 tbl2 = np.array(tabla3)
 
-
-
-tabla2 = [2, 0, 0, 1],\
-        [0, 0, -1, 0],\
-        [0, 3, 0, 0],\
-        [4, 0, 0, 0],\
-        [0, 0, -2, 0]
 tbl = np.array(tabla2)
 
-lr = [2, 0, 1],\
-     [0, -1, 0],\
-     [0, -2, 0]
-
 lrt = np.array(lr)
+
 pila = list()
 
-class elementoDePila:
-    def __init__(self, cadena, tipo, pos):
+class stackElement:
+    def __init__(self, cadena, tipo, posicion):
         self.cad = cadena
         self.tipo = tipo
-        self.pos = pos
+        self.posicion = posicion
 
-    def __repr__(self) -> str:
-        return self.__dict__
+    def __repr__(self):
+        return str(self.__dict__)
 
-class terminal(elementoDePila):
-    def __init__(self, cadena, tipo, pos):
-        elementoDePila.__init__(self, cadena, tipo, pos)
+class terminal(stackElement):
+    def __init__(self, cadena, tipo, posicion):
+        stackElement.__init__(self, cadena, tipo, posicion)
 
-class noTerminal(elementoDePila):
-    def __init__(self, cadena, tipo, pos):
-        elementoDePila.__init__(self, cadena, tipo, pos)
+class noterminal(stackElement):
+    def __init__(self, cadena, tipo, posicion):
+        stackElement.__init__(self, cadena, tipo, posicion)
 
-class estado(elementoDePila):
-    def __init__(self, cadena, tipo, pos, estado):
-        elementoDePila.__init__(self, cadena, tipo, pos)
+class estado(stackElement):
+    def __init__(self, cadena, tipo, posicion, estado):
+        stackElement.__init__(self, cadena, tipo, posicion)
         self.estado = estado
+
 
 class analizador:
     def __init__(self, input):
-        self.input = input +"~"
-        self.estado = 0
+        self.input_analizada = input +"~"
+        self.edo = 0
         self.i = 0
-        self.tmp = ""
+        self.tmp =""
         self.continua = True
-        self.tipo = list() 
+        self.tipo=list()
         self.aux = 0
-    
-    def analizador(self):
-        while self.continua:
-            c = self.input[self.i]
+        
 
-            if self.estado == 0:
+    def lexicoAnalizer(self):
+        
+        while self.continua:
+            c = self.input_analizada[self.i]
+            
+            if self.edo == 0:                                                   #General
                 if c >= "0" and c <= "9":
-                    self.estado = 1
-                    self.tmp += c
-                
+                    self.edo = 1
+                    self.tmp +=c
+                    
                 elif c == "E":
-                    self.tmp += c
+                    self.tmp +=c
                     self.tipo.append(3)
-                    objlex = noTerminal("E",self.tipo[-1],0)
+                    objlex = noterminal("E",self.tipo[-1],0)
                     listLexico.append(objlex)
                     self.continua = False
+                    
                 elif c >= "a" and c <= "z" or c >= "A" and c <= "Z" or c == "_":
-                    self.estado = 4
+                    self.edo = 4
                     self.tmp += c
                 elif c == " ":
-                    self.estado = 0
+                    self.edo = 0
+
                 elif c == "'" or c=='"':
-                    self.estado = 9
-                    self.tmp += c
+                    self.edo = 9
+                    self.tmp +=c
+
                 elif (c == "*") or (c == "/"):
-                    self.estado = 0
-                    self.tmp += c
+                    self.edo = 0
+                    self.tmp +=c
                     self.tipo.append(6)
-                    objlex = terminal(self.tmp, self.tipo[-1],0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
                     self.clean()
-                elif (c == "=") or (c == "!"): #Para los simbolos
+
+                elif (c == "=") or (c == "!"):    
                     self.clean()
-                    self.estado = 5
-                    self.tmp += c
-                elif (c == "<") or (c == ">"):
+                    self.edo = 5
+                    self.tmp +=c
+                
+                elif (c == "<") or (c == ">"):    
                     self.clean()
-                    self.estado = 6
-                    self.tmp += c
-                elif (c == "|"):
+                    self.edo = 6
+                    self.tmp +=c
+                elif (c == "|"):    
                     self.clean()
-                    self.estado = 7
-                    self.tmp += c
-                elif (c == "&"):
+                    self.edo = 7
+                    self.tmp +=c
+                elif (c == "&"):    
                     self.clean()
-                    self.estado = 8
-                    self.tmp += c
+                    self.edo = 8
+                    self.tmp +=c
+
+                
                 elif (c == "+") or (c == "-"):
                     if self.aux == 1:
                         self.tipo.append(1)
-                        objlex = terminal(self.tmp, self.tipo[-1],0)
+                        objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listLexico.append(objlex)
                         self.clean()
+
                     elif self.aux == 2:
+                        
                         self.clean()
                     if c =="+":
                         self.tmp +=c
@@ -117,70 +115,68 @@ class analizador:
                         objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listLexico.append(objlex)
                         self.clean()
-                        self.estado = 0
+                        self.edo = 0
                     else:
                         self.tmp +=c
                         self.tipo.append(5)
                         objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listLexico.append(objlex)
                         self.clean()
-                        self.estado = 0
-
+                        self.edo = 0
+                    
+                
                 elif c == "$":
                     self.tmp +=c
                     self.tipo.append(2)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
-                    self.estado = 0
+                    self.edo = 0
                 elif c == "(":
                     self.tmp +=c
                     self.tipo.append(14)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
-                    self.estado = 0
+                    self.edo = 0
                     self.clean()
                 elif c == ")":
                     self.tmp +=c
                     self.tipo.append(15)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
-                    self.estado = 0
+                    self.edo = 0
 
                 elif c == "{":
                     self.tmp +=c
                     self.tipo.append(14)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
-                    self.estado = 0
+                    self.edo = 0
                     self.clean()
                 elif c == "}":
                     self.tmp +=c
                     self.tipo.append(15)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
-                    self.estado = 0
+                    self.edo = 0
                     
-
-                
                 elif c == "~":
                     self.continua=False
-            
-            elif self.estado == 1:                                     #Numeros
+                
+            elif self.edo == 1:                                     #Numeros
                 if c >= "0" and c <= "9":
-                    self.estado = 1
+                    self.edo = 1
                     self.tmp +=c
 
                 elif c == ".":
-                    self.estado = 2
+                    self.edo = 2
                     self.tmp += c
 
                 elif c == " ":
-                    self.estado = 0
+                    self.edo = 0
                     self.tipo.append(1)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
                     self.clean()
-                    #self.tmp +=c
 
                 elif c == "~":
                     self.tipo.append(1)
@@ -188,18 +184,18 @@ class analizador:
                     listLexico.append(objlex)
                     self.continua = False
                 else:
-                    self.estado = 0
+                    self.edo = 0
                     self.aux = 1
                     self.i-=1
 
-            elif self.estado == 2:                                 #Float
+            elif self.edo == 2:                                 #Float
                 if c >= "0" and c <= "9":
-                    self.estado = 3
+                    self.edo = 3
                     self.tmp +=c
             
-            elif self.estado == 3:                                 #Terminacion Num
+            elif self.edo == 3:                                 #Terminacion Num
                 if c >= "0" and c <= "9":
-                    self.estado = 3
+                    self.edo = 3
                     self.tmp +=c
                     self.tipo.append(2)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
@@ -207,39 +203,39 @@ class analizador:
                     self.clean()
                 
                 elif c == " ":
-                    self.estado = 0
+                    self.edo = 0
                     #self.tmp +=c
 
                 elif c == "~":
                     
                     self.continua = False
                 else:
-                    self.estado = 0
+                    self.edo = 0
                     self.i-=1
 
-            elif self.estado == 4:                                                                         #Letras
+            elif self.edo == 4:                                                                         #Letras
                 if c >= "a" and c <= "z" or c >= "A" and c <= "Z" or c == "_" or c >= "0" and c <= "9":
-                    self.estado = 4
+                    self.edo = 4
                     self.tmp +=c
                 elif c == " ":
-                    self.reservada()
+                    self.reservado()
                     self.clean()
-                    self.estado = 0
+                    self.edo = 0
                     #self.tmp +=c
 
                 elif c == "~":
-                    self.reservada()
+                    self.reservado()
                     self.continua = False
                 else:
-                    self.reservada()
-                    self.estado = 0
+                    self.reservado()
+                    self.edo = 0
                     self.clean()
                     self.i-=1
                     self.aux=2
             
-            elif self.estado == 5:                                 #Terminacion Simbolo
+            elif self.edo == 5:                                 #Terminacion Simbolo
                 if c == "=":
-                    self.estado = 0
+                    self.edo = 0
                     self.tmp +=c
                     self.tipo.append(11)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
@@ -247,13 +243,11 @@ class analizador:
                     self.clean()
                 
                 elif c == " ":
-                    self.estado = 0
-                    #self.tmp +=c
+                    self.edo = 0
 
                 elif c == "~":
-                    if self.cadena_analizada[self.i-1]=="=":
-                        self.estado = 0
-                        #self.tmp +=c
+                    if self.input_analizada[self.i-1]=="=":
+                        self.edo = 0
                         self.tipo.append(18)
                         objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listLexico.append(objlex)
@@ -262,9 +256,8 @@ class analizador:
                         self.clean()
                     self.continua = False
                 else:
-                    if self.cadena_analizada[self.i-1]=="=":
-                        self.estado = 0
-                        #self.tmp +=c
+                    if self.input_analizada[self.i-1]=="=":
+                        self.edo = 0
                         self.tipo.append(18)
                         objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listLexico.append(objlex)
@@ -273,9 +266,9 @@ class analizador:
                         self.clean()
                     self.i-=1
 
-            elif self.estado == 6:                                 #Terminacion Simbolo
+            elif self.edo == 6:                                 #Terminacion Simbolo
                 if c == "=":
-                    self.estado = 0
+                    self.edo = 0
                     self.tmp +=c
                     self.tipo.append(7)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
@@ -283,29 +276,25 @@ class analizador:
                     self.clean()
                 
                 elif c == " ":
-                    self.estado = 0
-                    #self.tmp +=c
+                    self.edo = 0
 
                 elif c == "~":
-                    self.estado = 0
-                    #self.tmp +=c
+                    self.edo = 0
                     self.tipo.append(7)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
-                    #self.clean()
                     self.continua = False
                 else:
-                    self.estado = 0
-                    #self.tmp +=c
+                    self.edo = 0
                     self.tipo.append(7)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listLexico.append(objlex)
                     self.clean()
                     self.i-=1
 
-            elif self.estado == 7:                                 #Terminacion Simbolo
+            elif self.edo == 7:                                 #Terminacion Simbolo
                 if c == "|":
-                    self.estado = 0
+                    self.edo = 0
                     self.tmp +=c
                     self.tipo.append(8)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
@@ -313,20 +302,20 @@ class analizador:
                     self.clean()
                 
                 elif c == " ":
-                    self.estado = 0
+                    self.edo = 0
                     #self.tmp +=c
 
                 elif c == "~":
                     
                     self.continua = False
                 else:
-                    self.estado = 0
+                    self.edo = 0
                     self.clean()
                     self.i-=1
 
-            elif self.estado == 8:                                 #Terminacion Simbolo
+            elif self.edo == 8:                                 #Terminacion Simbolo
                 if c == "&":
-                    self.estado = 0
+                    self.edo = 0
                     self.tmp +=c
                     self.tipo.append(9)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
@@ -334,20 +323,20 @@ class analizador:
                     self.clean()
                 
                 elif c == " ":
-                    self.estado = 0
+                    self.edo = 0
                     #self.tmp +=c
 
                 elif c == "~":
                     
                     self.continua = False
                 else:
-                    self.estado = 0
+                    self.edo = 0
                     self.clean()
                     self.i-=1
             
-            elif self.estado == 9:                                 #Terminacion Simbolo
+            elif self.edo == 9:                                 #Terminacion Simbolo
                 if c == "'" or c == '"':
-                    self.estado = 0
+                    self.edo = 0
                     self.tmp +=c
                     self.tipo.append(3)
                     objlex = terminal(self.tmp, self.tipo[-1], 0)
@@ -359,96 +348,95 @@ class analizador:
                     
                     self.continua = False
                 else:
-                    self.estado = 9
+                    self.edo = 9
                     self.tmp +=c
                     
 
             self.i+=1
-        
-        print(self.estado)
-        print(self.input)
+
+        print(self.edo)
+        print(self.input_analizada)
         print(self.tmp)
-        self.estado = 0
+        self.edo = 0
         self.i = 0
         self.tmp =""
         self.continua = True
-        bandera =0
 
-
-    def reservada(self):
-        res = self.tmp
-        if "while" == res:
+    def reservado(self):
+        strid = self.tmp
+        if "while" == strid:
             self.tipo.append(20)
             objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
-            print(res, " Palabra reservada de tipo", self.tipo[-1])
-        elif "if" == res:
+            print(strid, " Reservada Tipo", self.tipo[-1])
+        elif "if" == strid:
             self.tipo.append(19)
-            objlex = terminal(self.tmp, self.tipo[-1],0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
-            print(res, " Palabra reservada de tipo", self.tipo[-1])
-        elif "return" == res:
-            self.tipo(19)
-            objlex = terminal(self.tmp, self.tipo[-1],0)
+            print(strid, " Reservada Tipo", self.tipo[-1])
+        elif "return" == strid:
+            self.tipo.append(21)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
-            print(res, " Palabra reservada de tipo", self.tipo[-1])
-        elif "else" == res:
-            self.tipo(22)
-            objlex = terminal(self.tmp, self.tipo[-1],0)
+            print(strid, " Reservada Tipo", self.tipo[-1])
+        elif "else" == strid:
+            self.tipo.append(22)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
-            print(res, " Palabra reservada de tipo", self.tipo[-1])
-        elif "int" == res:
-            self.tipo(4)
-            objlex = terminal(self.tmp, self.tipo[-1],0)
+            print(strid, " Reservada Tipo", self.tipo[-1])
+        elif "int" == strid:
+            self.tipo.append(4)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
-            print(res, " Palabra reservada de tipo", self.tipo[-1])
-        elif "float" == res:
-            self.tipo(4)
-            objlex = terminal(self.tmp, self.tipo[-1],0)
+            print(strid, " Reservada Tipo", self.tipo[-1])
+        elif "float" == strid:
+            self.tipo.append(4)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
-            print(res, " Palabra reservada de tipo", self.tipo[-1])
-        elif "void" == res:
-            self.tipo(4)
-            objlex = terminal(self.tmp, self.tipo[-1],0)
+            print(strid, " Reservada Tipo", self.tipo[-1])
+        elif "void" == strid:
+            self.tipo.append(4)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
-            print(res, " Palabra reservada de tipo", self.tipo[-1])
+            print(strid, " Reservada Tipo", self.tipo[-1])
         else:
             self.tipo.append(0)
-            objlex = terminal(self.tmp, self.tipo[-1],0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listLexico.append(objlex)
     
     def clean(self):
-        self.estado = 0
-        self.tmp = ""
+        self.edo = 0
+        self.tmp =""
         self.continua = True
-    
+
     def find(self, str):
         for objlex in listLexico:
-            if objlex == str:
+            if objlex.cad == str:
                 return objlex
             else:
                 pass
 
 
-entrada = "a+b+c"
-print("Cadena ingresada: ", entrada)
-formatearCadena = entrada.split()
-formatearCadena.append("$")
 
-formatearCadena.append("E")
-for i in range (len(formatearCadena)):
-    cadena = analizador(formatearCadena[i])
-    cadena.analizador()
+cad = "a+b+c"
+print("Cadena ingresada: ", cad)
+particionEntrada = cad.split()
+particionEntrada.append("$")
 
-formatearCadena2 = list()
-print('------------------------')
-print("Leido        Tipo        Pos")
+particionEntrada.append("E")
+for i in range (len(particionEntrada)):
+    cadena = analizador(particionEntrada[i])
+    cadena.lexicoAnalizer()
+
+particionEntrada2 = list()
+print('* * * * * * * * * * * * * * * * * *')
+print("Leido        Tipo        posicion")
 for objlex in listLexico:
-    print(objlex.cad, f"{'':>9}", objlex.tipo, f"{'':>9}", objlex.pos)
-    formatearCadena2.append(objlex.cad)
-formatearCadena.clear()    
-formatearCadena=formatearCadena2
-auxelimna = (len(formatearCadena)-2)*2
+    print(objlex.cad, f"{'':>9}", objlex.tipo, f"{'':>9}", objlex.posicion)
+    particionEntrada2.append(objlex.cad)
+particionEntrada.clear()    
+particionEntrada=particionEntrada2
+auxelimna = (len(particionEntrada)-2)*2
 fila = 0
 columna = 0
 accion =0
@@ -460,11 +448,9 @@ pila.append(estado("0",0,0,0))
 
 i=0
 
-
 while True:
-    #print(pila)
     fila = pila[-1].tipo
-    columna = cadena.find(formatearCadena[i])
+    columna = cadena.find(particionEntrada[i])
     accion = tbl2[fila,columna.tipo]
     accion= estado(str(accion), accion, accion, accion)
     if accion.estado == 0:
@@ -484,5 +470,5 @@ while True:
             while auxelimna != 0:
                 pila.pop()
                 auxelimna-=1
-            formatearCadena[i-1]="E"
+            particionEntrada[i-1]="E"
             i-=1
