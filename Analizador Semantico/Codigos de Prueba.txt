@@ -1,0 +1,130 @@
+cad = "int a;\
+        int suma(int a, int b){\
+	    return a+b;}\
+        int main(){\
+        float a;\
+        int b;\
+        int c;\
+        c = a + b;\
+        c = suma(8.5 , 9.9 );}"
+
+cad = "int main(){\
+        int b;\
+        int c;\
+        float a;\
+        c = a + b;}"
+
+
+
+cad = "int main():{\
+        int b;}\
+        void menu():{\
+        int c;}"
+
+
+
+cad = "int main():{\
+        int b;}\
+        void menu():{\
+        int c;}\
+        float sum():{\
+        int d;}"
+
+cad = "int main(){\
+            int a, b, c;\
+            float a, b, c;\
+        }"
+cad = "int main(){\
+            int a;\
+            int b;\
+        }\
+        int sum(){\
+            int c;\
+            int d;\
+        }"
+
+cad = "int main(){\
+            int a, b;\
+        }"
+
+cad = "int main(){\
+            int a, b;\
+        }\
+        int menu(){\
+            int c, d;\
+        }"
+
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        c = b + a;\
+        }\
+        int menu(){\
+        int d;\
+        int e;\
+        float f;\
+        f = d + e;\
+        }"
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        c = b + a;\
+        b = a + c;\
+        }"
+
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        float x;\
+        }"
+
+cad = "int main(int b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "int z;\
+        int main(){\
+            int a, b;\
+        }\
+        int g;\
+        int menu(){\
+            int c, d;\
+        }"
+
+
+cad = "int main(int b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "int main(float b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        int x;\
+        z = main(x);\
+        }"
