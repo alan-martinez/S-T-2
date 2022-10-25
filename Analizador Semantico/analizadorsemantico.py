@@ -1,7 +1,5 @@
-from asyncio.windows_events import NULL
-from dataclasses import dataclass
-from genericpath import exists
-import numpy as np
+
+# import anytree
 from anytree import Node, RenderTree
 
 listalexico = list()
