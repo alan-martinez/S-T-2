@@ -1,16 +1,20 @@
-# Seminario-Traductores-2 - Analizador Sintáctico (Implementación usando Objetos)
-Tarea: Analizador sintactico (Implementando objectos) con el Dr. MICHEL EMANUEL LOPEZ FRANCO.
-Para esta practica fue necesario implementar una clase principal llamada ElementoPila y 3 clases mas que heredaban de esta como lo son Terminal, No terminal y Estado.
-Con esto se consiguio que la salida fuera igual que el analisis manual, teniendo como resultados los desplazamientos, las reglas implementadas en las tablas asi como los terminales y no terminales:
 
-![image](https://user-images.githubusercontent.com/70921354/188274106-8bafcb55-d8b7-447e-9940-edb85036337c.png)
+# Seminario de solucion de problemas de traductores 2 - Analizador Semantico
 
-![image](https://user-images.githubusercontent.com/70921354/188274122-22b1f1f6-d29f-43d9-abcc-4543afdee506.png)
+Analizador semantico completo: Se implemento la validacion de tipos, asi como la tabla se simbolos.
+
+Entrada:
+
+![image](https://user-images.githubusercontent.com/70921354/197688277-32989e32-7b6c-401b-bfb8-f8b6c36cde43.png)
+
+Salida:
+
+![image](https://user-images.githubusercontent.com/70921354/197688397-0301be51-eafc-4cd7-a3be-5fe99c64c3cc.png)
+![image](https://user-images.githubusercontent.com/70921354/197688460-302e0d8c-3b2d-4f20-9ad8-b2f4d2b2edfe.png)
 
 
-### Tablas utilizadas:
+A la hora de ingresar una entrada de datos tambien valida el tipo retornando su inicial.
+Los errores en las variables locales son indentificadas con la tabla de simbolos
 
-![image](https://user-images.githubusercontent.com/70921354/188274227-8c88bd78-0ba6-4646-9cdf-60eb04cd285c.png)
+Alan Martinez
 
-#### Autor: 
-Alan Martínez
