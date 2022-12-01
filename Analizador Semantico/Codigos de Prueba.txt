@@ -9,14 +9,6 @@ cad = "int a;\
         c = suma(8.5 , 9.9 );}"
 
 cad = "int main(){\
-        float a;\
-        int b;\
-        int c;\
-        c = a+b;\
-        c = suma(8,9);\
-        }"
-
-cad = "int main(){\
         int b;\
         int c;\
         float a;\

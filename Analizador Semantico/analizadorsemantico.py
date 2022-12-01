@@ -1740,34 +1740,13 @@ class analizador:
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
 
-# cad = " int sum(int a){\
-#         int z;\
-#         z = a;\
-#         return z;\
-#         }\
-#         int menu(){\
-#         int x;\
-#         int z;\
-#         x = 2;\
-#         z = 2;\
-#         z = sum(x);\
-#         return z;\
-#         }"
-
-cad = " int sum(int a){\
-        int z;\
-        z = a;\
-        return z;\
-        }\
-        int menu(){\
+cad = "int menu(){\
         int x;\
         int z;\
         x = 2;\
-        z = 2;\
-        z = sum(x);\
+        z = 1.5;\
         return z;\
         }"
-
 
 
     #agregar la posibilidad de asginar valor a las variables en la r37 o r52
