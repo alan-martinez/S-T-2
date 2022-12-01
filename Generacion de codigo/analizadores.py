@@ -66,6 +66,7 @@ def auxreglas():
         auxregl.append(l.split('\t'))
 
     for obj in auxregl:
+        #obj = Regla(int(obj[0]), int(obj[1]), str(obj[2]))
         obj = Regla(n, int(obj[0]), int(obj[1]), str(obj[2]))
         n+=1
         lisreglas.append(obj)
@@ -79,6 +80,7 @@ def buscar(str):
                 pass
 root = Node(10)
 globals()['bandera']=0
+#actual = Node(5, parent=root)
 class Variables:
     def __init__(self, cad, contexto):
         self.cad = cad
@@ -97,6 +99,8 @@ class retorno:
 class Nodo:
     def __init__(self, data):
         self.data = data
+        #self.root = Node(10)
+        #self.actual = Node
         self.contadordefinicion =0
         
 
@@ -137,6 +141,7 @@ class DefVar(Nodo):
         self.data = pila.pop()
         pila.pop()
         pila.pop()
+        #listavariables.append(DefVar('Unknown ', self.data, self.lv))
         listavar.append(DefVar('Unknown ', self.data, self.lv))
     def __repr__(self):
         aux = ("Variable""\n \t \t \t" "Tipo: "+str(self.data.cad)+ " ID: "+str(self.tipo.cad)+ " Contexto: "+str(self.lv))
@@ -164,6 +169,7 @@ class DefFunc(Nodo):
         pila.pop()
         tipo= pila.pop()
         if globals()['tiporetorno'] != tipo.cad:
+            #Agregue cambio en el tipo de retorno
             if globals()['tiporetorno'] == '':
                 pass
             else:
@@ -175,6 +181,8 @@ class DefFunc(Nodo):
              for i in range (len(listaparametros)):
                 auxiliar = listaparametros.pop()
                 auxiliar.parent = globals()['auxiliarFunc']
+             #globals()['parametro'].parent = globals()['auxiliarFunc']
+             #globals()['auxiliarBlo'].parent =globals()['parametro']
              globals()['auxiliarBlo'].parent =auxiliar
         else:
             globals()['auxiliarFunc'] = Node(DefFunc(self.data, id, tipo), parent = root)
@@ -255,6 +263,7 @@ class Parametros(Nodo):
             contexto= pila[4].cad
         listaparametrosid.append(Parametros2(self.tipo.cad, self.id.cad, contexto))
         code.parametros(1, self.id.cad)
+        #actual = Node(DefLocal(self.data), parent = root)
     def __repr__(self):
         aux = ('Parametros' '\n'+ ' Tipo: '+str(self.tipo.cad)+' Id: '+str(self.id.cad))
         return aux
@@ -294,6 +303,9 @@ class DefLocal(Nodo):
             globals()['sentencia'].parent = globals()['auxiliarLocalSen']
         
         listalocal.append(globals()['auxiliarLocalSen'])
+        if globals()['banderaprint']==1:
+            code.funcionprint(globals()['valorprint'])
+            globals()['banderaprint']=0
     def __repr__(self):
         aux = ('DefLocal')
         return aux
@@ -321,6 +333,7 @@ class DefLocales(Nodo):
             else:
                 globals()['auxiliarLocal'].parent = globals()['auxiliarLocales'] 
           
+#Expresiones como asigna las var       
     def __repr__(self):
         aux = ('DefLocales')
         return aux
@@ -330,6 +343,7 @@ class BloqFunc(Nodo):
         Nodo.__init__(self, data)
         self.bandera = bandera
     def eliminaBlo(self):
+        #Agregue un clear
         listaterminos.clear()
         pila.pop()
         pila.pop()
@@ -339,6 +353,7 @@ class BloqFunc(Nodo):
         pila.pop()
         self.bandera = 0
         globals()['auxiliarBlo'] = Node(BloqFunc(self.data, self.bandera), parent = root)
+        #globals()['sentencias'].parent = globals()['auxiliarBlo'] 
         globals()['auxiliarLocales'].parent = globals()['auxiliarBlo'] 
     def eliminaBloque(self):
         pila.pop()
@@ -524,11 +539,16 @@ class Definicion(Nodo):
                 listadefinicion.append(obj)
                 
                 self.contadordefinicion+=1
+                #USar 4 variables, solo esas
+                #un if en las definiciones, por cada momento solo se podran manejar de a 4
 
     def __repr__(self):
         aux = ("Definicion")
         return aux
+
     
+
+
 
 class Definiciones(Nodo):
     def __init__(self, data, ultimadef):
@@ -711,8 +731,17 @@ class Sentencia(Nodo):
         pila.pop()
         pila.pop()
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
-        aux = listasentenciasbloque.pop(0)
+        aux = listasentenciasbloque.pop()
         aux.parent = globals()['sentencia']
+        '''
+        if globals()['banderaelse']==1:
+            
+            globals()['sentenciaE'].parent = globals()['sentencia']
+            globals()['banderaelse']=0
+        else:
+            globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
+            globals()['SentenciaBloque'].parent = globals()['sentencia']
+        '''
         self.aux = 'Sentencia If'
         code.traductorif(globals()['expresionif'], listaterminosaux, globals()['banderaelse'])
         listasenifelse.append(globals()['sentencia'])
@@ -725,10 +754,13 @@ class Sentencia(Nodo):
         pila.pop()
         pila.pop()
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
-        aux = listasentenciasbloque.pop(0)
+        aux = listasentenciasbloque.pop()
         aux.parent = globals()['sentencia']
         self.aux = 'Sentencia Else'
         listasenifelse.append(globals()['sentencia'])
+        #code.traductorif(globals()['expresionif'], listaterminosaux)
+        #listaterminosaux.clear()
+        #globals()['expresionif']=''
     def eliminaWhile(self):
         pila.pop()
         pila.pop()
@@ -755,7 +787,36 @@ class Sentencia(Nodo):
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
         listasentencias.append(globals()['sentencia'])
         cont =0
-        
+        '''
+        try:
+            if listaexpresiones[-1]==globals()['expresionSum']:
+                globals()['expresionSum'].parent = globals()['sentencia']
+            else:
+                pass
+        except:
+            pass
+        try:
+            if listaexpresiones[-1]==globals()['expresionRel']:
+                globals()['expresionRel'].parent = globals()['sentencia']
+            else:
+                pass
+        except:
+            pass
+        if len(listallamadas)!=0 or len(listaexpresiones)!=0:
+            if globals()['relacional'] ==1:
+                globals()['expresionRel'].parent = globals()['sentencia']
+                globals()['relacional'] =0
+            elif globals()['multi'] ==1:
+                globals()['expresionMul'].parent = globals()['sentencia']
+                globals()['multi']=0
+            elif globals()['igualdad'] ==1:
+                globals()['expresionIgu'].parent = globals()['sentencia']
+                globals()['igualdad']=0
+            else:
+                globals()['expresion'].parent = globals()['sentencia']
+        '''
+            #listallamadas.clear()
+
         for obj in listaexpresiones:
             obj.parent = globals()['sentencia']
         listaexpresiones.clear()
@@ -929,6 +990,7 @@ class Sentencia(Nodo):
         globals()['auxiliarBlo'].parent = globals()['SentenciaBloque']
         listasentenciasbloque.append(globals()['SentenciaBloque'])
         self.aux = 'Sentencia Bloque'
+        
     def __repr__(self):
         return self.aux
 
@@ -1005,6 +1067,7 @@ class Expresion(Nodo):
         globals()['expresion'].parent = globals()['expresionIgu']
         listaexpresiones.append(globals()['expresionIgu'])
         globals()['igualdad']=1
+        #code.traductorif(globals()['expresionif'], listaterminosaux)
         listaterminosaux.clear()
         
     def flagreset(self):
@@ -1069,6 +1132,8 @@ class analizador:
         self.continua = True
         self.tipo=list()
         self.aux = 0
+        #self.banderap=0
+        #self.banderac=0
         
 
     def anlexico(self):
@@ -1076,7 +1141,7 @@ class analizador:
         while self.continua:
             c = self.cadena_analizada[self.i]
             
-            if self.edo == 0:                                           
+            if self.edo == 0:                                                   #General
                 if c >= "0" and c <= "9":
                     self.edo = 1
                     self.tmp +=c
@@ -1799,6 +1864,8 @@ class analizador:
         elif num == 42:                     
             sentencia = Sentencia('Data', 'Sentencia Bloque')
             sentencia.eliminaSentenciaBloque()
+            #Agregue un clear
+            listadefexpresion.clear()
         elif num == 46:                                 
             expresion = Expresion('Data')
             expresion.eliminaMul()
@@ -1833,37 +1900,37 @@ class analizador:
         self.continua = True
 
 
-cad = "int a;\
-        int suma(int a, int b){\
-	    return a+b;}\
-        int main(){\
-        float a;\
-        int b;\
-        int c;\
-        c = a + b;\
-        c = suma(8.5 , 9.9 );}"
 
 
-# cad = " int sum(int a){\
-#         int z;\
-#         z = a + 2;\
-#         return z;\
-#         }\
-#         int main(){\
-#         int x;\
-#         int z;\
-#         x = 7;\
-#         z = 2;\
-#         z = sum(x);\
-#         print(z)\
-#         return z;\
-#         }"
+
+#print("Ingrese la cadena de caracteres a analizar")
+#cad = input()
+cad = "int main(){\
+        int x;\
+        int z;\
+        x = 2;\
+        z = 4;\
+        if (x > z)\
+        {\
+            return x;\
+        }\
+        else{\
+            z = 5;\
+        }\
+        print(z)\
+        return z;\
+        }"
+
+#Arreglar sentencia bloque para if y else, posble cambio agregalr un num de id al bloque y sacarlo en base a eso
+#USar un insert para acomodar los if y else, en valor retorno hacer otra lista y mandarla tambien al traductor if
+#Mandar una bandera para saber si es if y else o solo if
 
         
 print("Cadena ingresada: ", cad)
 divcad = cad.split()
 divcad.append("$")
 actual = 0
+#divcad.append("E")
 for i in range (len(divcad)):
     actual = i
     cadena = analizador(divcad[i])
@@ -1874,6 +1941,7 @@ if globals()['banderac']!=0:
     listaerroreslex.append('Error, corchetes sin cerrar ')
 divcad2 = list()
 print('-----------------------------------------')
+#print("Leido        Tipo        Pos")
 print('Leido', f"{'':>9}", 'Tipo', f"{'':>9}", 'Pos', f"{'':<9}")
 for objlex in listalexico:
     print(objlex.cad, f"{'|':>11}", objlex.tipo, f"{'|':>9}", objlex.pos)
@@ -1886,6 +1954,7 @@ columna = 0
 accion =0
 acept = False
 print(len(listaerroreslex))
+#pila.append("$")
 if len(listaerroreslex)!=0:
     for obj in listaerroreslex:
         print(obj)
@@ -1910,8 +1979,10 @@ else:
     print('Tabla de símbolos')
     print('Tipo', f"{'':>9}", 'ID', f"{'':>9}", 'Ambito', f"{'':<9}")
     print('-----------------------------------')
+
     for obj in listavariables:
         print(obj.data.cad, f"{'|':>11}", obj.tipo.cad, f"{'|':>9}", obj.lv)
+    
     code.codigotraducido()
     
 
